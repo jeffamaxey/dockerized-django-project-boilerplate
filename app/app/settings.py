@@ -92,8 +92,9 @@ if DEBUG:
     import socket
 
     hostname, _, ips = socket.gethostbyname_ex(socket.gethostname())
-    INTERNAL_IPS = [ip[:-1] + '1' for ip in ips] + \
-        ['127.0.0.1', '10.0.2.2'] + ALLOWED_HOSTS
+    INTERNAL_IPS = (
+        [f'{ip[:-1]}1' for ip in ips] + ['127.0.0.1', '10.0.2.2']
+    ) + ALLOWED_HOSTS
 
     INSTALLED_APPS.append('debug_toolbar')
     MIDDLEWARE.append("debug_toolbar.middleware.DebugToolbarMiddleware")
@@ -104,8 +105,7 @@ if DEBUG:
     SECURE_BROWSER_XSS_FILTER = False
 
 
-elif not DEBUG:
-
+else:
     MIDDLEWARE += ["csp.middleware.CSPMiddleware"]
 
     STATIC_ROOT = "/vol/web/static"
